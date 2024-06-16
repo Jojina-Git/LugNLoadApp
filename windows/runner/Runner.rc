@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "lugnload" "\0"
+            VALUE "FileDescription", "lugnload_project1" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "lugnload" "\0"
+            VALUE "InternalName", "lugnload_project1" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "lugnload.exe" "\0"
-            VALUE "ProductName", "lugnload" "\0"
+            VALUE "OriginalFilename", "lugnload_project1.exe" "\0"
+            VALUE "ProductName", "lugnload_project1" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
