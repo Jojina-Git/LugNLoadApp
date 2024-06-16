@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'haul_form.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,9 +46,10 @@ class MyHomePage extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            if (kDebugMode) {
-              print('Button pressed');
-            }
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HaulForm()),//navigate to the page
+            );
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.green,
