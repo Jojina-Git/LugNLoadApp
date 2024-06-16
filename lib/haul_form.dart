@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'haul_list.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -112,7 +113,11 @@ class _HaulFormState extends State<HaulForm> {
           ),
         );
 
-
+        // Navigate to HaulList
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HaulList()),
+        );
       }).catchError((error) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -356,7 +361,7 @@ class HaulList extends StatelessWidget {
                 child: GestureDetector(
                   onTap: () {
                     // Navigate
-                  print("Success");
+                   print("Success");
                   },
                   child: Card(
                     child: Padding(
