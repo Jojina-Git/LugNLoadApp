@@ -1,10 +1,30 @@
 {
   "project_info": {
     "project_number": "476144516049",
+    "firebase_url": "https://lugnload-d5f7c-default-rtdb.firebaseio.com",
     "project_id": "lugnload-d5f7c",
     "storage_bucket": "lugnload-d5f7c.appspot.com"
   },
   "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:476144516049:android:999a7ef88de132e9bc7ef0",
+        "android_client_info": {
+          "package_name": "com.example.lugnload"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0hdyn95vA3A3rSzXQhVX7Kiz0O8IICbw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
     {
       "client_info": {
         "mobilesdk_app_id": "1:476144516049:android:7ceadf3b60becc66bc7ef0",

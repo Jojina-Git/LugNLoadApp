@@ -1,4 +1,4 @@
-package com.example.lugnload_project1
+package com.example.lugnload
 
 import io.flutter.embedding.android.FlutterActivity
 

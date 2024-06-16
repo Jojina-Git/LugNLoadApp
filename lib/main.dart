@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'package:flutter/material.dart';
+import 'package:lugnload/Search.dart';
 import 'haul_form.dart';
+import 'firebase_options.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await Firebase.initializeApp(
@@ -16,46 +17,79 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
 
-  final String title;
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(title),
+        backgroundColor: Color(0xFF79AC78),
+        title:const Text("LugNload"),
       ),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HaulForm()),//navigate to the page
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.green,
-            textStyle: TextStyle(color: Colors.white),
+        child: Container(
+          child: Column(
+            children: [
+              Padding(padding: EdgeInsets.only(top: 20),
+
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Color(0xFF08B480),
+                    shape: StadiumBorder(),
+                    padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Search()),
+                    );
+                  },
+                  child: Text('Find Haul Post'),
+                ),
+
+              ),
+                Padding(padding: EdgeInsets.only(top: 20),
+                  child:ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Color(0xFF08B480),
+                      shape: StadiumBorder(),
+                      padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => HaulForm()),//navigate to the page
+                      );
+                    },
+                    child: Text('Create Haul Posts'),
+                  ),
+                )
+
+            ],
           ),
-          child: Text('Post a Haul'),
         ),
       ),
     );
