@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'haulList_detailsview.dart';
 import 'package:intl/intl.dart';
 
 class HaulList extends StatelessWidget {
@@ -43,7 +44,10 @@ class HaulList extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                 child: GestureDetector(
                   onTap: () {
-                    print("Click");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HaulListDetailsView(snapshot: haul)),
+                    );
                   },
                   child: Card(
                     child: Padding(

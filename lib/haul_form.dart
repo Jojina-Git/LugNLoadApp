@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'haul_list.dart';
+import 'haulList_detailsview.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -361,7 +362,10 @@ class HaulList extends StatelessWidget {
                 child: GestureDetector(
                   onTap: () {
                     // Navigate
-                   print("Success");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HaulListDetailsView(snapshot: haul)),
+                    );
                   },
                   child: Card(
                     child: Padding(
