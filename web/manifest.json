@@ -1,6 +1,6 @@
 {
-    "name": "lugnload",
-    "short_name": "lugnload",
+    "name": "lugnload_project",
+    "short_name": "lugnload_project",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
