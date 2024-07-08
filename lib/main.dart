@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:lugnload/UserDriverLogin.dart';
 import 'package:lugnload/Search.dart';
+import 'DriverHaulForm.dart';
 import 'haul_form.dart';
 import 'firebase_options.dart';
 
@@ -82,7 +83,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => HaulForm()),//navigate to the page
+                        //MaterialPageRoute(builder: (context) => HaulForm()),//navigate to the page
+                        MaterialPageRoute(builder: (context) =>DriverHaulForm()),
                       );
                     },
                     child: Text('Create Haul Posts'),
