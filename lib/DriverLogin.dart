@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lugnload/DriverLocation.dart';
 
+import 'DriverHaulForm.dart';
+
 class DriverLogin extends StatefulWidget {
   const DriverLogin({super.key});
 
@@ -31,10 +33,11 @@ class _DriverLoginState extends State<DriverLogin> {
                     padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
                   ),
                   onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => Search()),
-                    // );
+                    Navigator.push(
+                      context,
+
+                      MaterialPageRoute(builder: (context) =>DriverHaulForm()),
+                    );
                   },
                   child: Text('Create Post'),
                 ),

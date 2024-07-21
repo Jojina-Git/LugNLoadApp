@@ -2,8 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:lugnload/UserDriverLogin.dart';
 import 'package:lugnload/Search.dart';
-import 'DriverHaulForm.dart';
-import 'haul_form.dart';
+import 'package:lugnload/DriverHaulForm.dart';
+import 'package:lugnload/haul_form.dart';
+import 'package:lugnload/registration_page.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -14,6 +15,7 @@ Future<void> main() async {
     );
   } catch (e) {
     print('Error initializing Firebase: $e');
+
   }
   runApp(const MyApp());
 }
@@ -41,58 +43,71 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF79AC78),
-        title:const Text("LugNload"),
+        title: const Text("LugNload"),
       ),
       body: Center(
-        child: Container(
-          child: Column(
-            children: [
-              Padding(padding: EdgeInsets.only(top: 20),
-
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Color(0xFF08B480),
-                    shape: StadiumBorder(),
-                    padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Search()),
-                    );
-                  },
-                  child: Text('Find Haul Post'),
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Color(0xFF08B480),
+                  shape: StadiumBorder(),
+                  padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
                 ),
-
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Search()),
+                  );
+                },
+                child: Text('Find Haul Post'),
               ),
-                Padding(padding: EdgeInsets.only(top: 20),
-                  child:ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Color(0xFF08B480),
-                      shape: StadiumBorder(),
-                      padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        //MaterialPageRoute(builder: (context) => HaulForm()),//navigate to the page
-                        MaterialPageRoute(builder: (context) =>DriverHaulForm()),
-                      );
-                    },
-                    child: Text('Create Haul Posts'),
-                  ),
-                )
-
-            ],
-          ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Color(0xFF08B480),
+                  shape: StadiumBorder(),
+                  padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DriverHaulForm()),
+                  );
+                },
+                child: Text('Create Haul Posts'),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Color(0xFF08B480),
+                  shape: StadiumBorder(),
+                  padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RegistrationPage()),
+                  );
+                },
+                child: Text('Register'),
+              ),
+            ),
+          ],
         ),
       ),
     );

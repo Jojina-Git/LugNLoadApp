@@ -1,62 +1,111 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:lugnload/DriverLogin.dart';
-import 'package:lugnload/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'shared_preferences_service.dart';
+import 'registration_page.dart';
+import 'login.dart'; // Import your login page
+
+import 'main.dart';
 
 class UserDriverLogin extends StatefulWidget {
-  const UserDriverLogin({super.key});
+  const UserDriverLogin({Key? key}) : super(key: key);
 
   @override
-  State<UserDriverLogin> createState() => _DriverLoginState();
+  _UserDriverLoginState createState() => _UserDriverLoginState();
 }
 
-class _DriverLoginState extends State<UserDriverLogin> {
+class _UserDriverLoginState extends State<UserDriverLogin> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF79AC78),
-        title:const Text("LugNload"),
+        title: const Text('Login'),
       ),
-      body: Container(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Color(0xFF08B480),
-                shape: StadiumBorder(),
-                padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+            // Registration Button
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RegistrationPage()),
+                  );
+                },
+                child: const Text('Register'),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Color(0xFF08B480),
+                  shape: StadiumBorder(),
+                  padding: EdgeInsets.symmetric(vertical: 12.0),
+                ),
               ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MyHomePage()),
-                );
-              },
-              child: Text('Login as user'),
             ),
-
-            Padding(padding: EdgeInsets.only(top: 20),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Color(0xFF08B480),
-                shape: StadiumBorder(),
-                padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+            // Login Button
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                  );
+                },
+                child: const Text('Login'),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Color(0xFF08B480),
+                  shape: StadiumBorder(),
+                  padding: EdgeInsets.symmetric(vertical: 12.0),
+                ),
               ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => DriverLogin()),
-                );
-              },
-              child: Text('Login as Driver'),
             ),
-            )
           ],
         ),
       ),
     );
+  }
+
+  Future<void> _loginAsUser() async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      await SharedPreferencesService.saveLoginState(true, 'user');
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MyHomePage()),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Login failed: $e'),
+      ));
+    }
+  }
+
+  Future<void> _loginAsDriver() async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      await SharedPreferencesService.saveLoginState(true, 'driver');
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MyHomePage()),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Login failed: $e')),
+      );
+    }
   }
 }

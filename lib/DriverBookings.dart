@@ -40,7 +40,7 @@ class _DriverBookingsState extends State<DriverBookings> {
         if (driverDoc.exists) {
           requests.add(PostHaul(
             id: requestDoc.id,
-            name: driverDoc['origin'], // Corrected to 'name'
+            name: driverDoc['origin'],
             destination: driverDoc['destination'], // Corrected to 'destination'
           ));
         } else {
