@@ -65,34 +65,73 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Login'),
+        backgroundColor: Color(0xFF08B480),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
+            Text(
+              'Login',
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF08B480),
+              ),
+              textAlign: TextAlign.center,
             ),
-            TextField(
+            SizedBox(height: 40),
+            _buildTextField(
+              controller: _emailController,
+              labelText: 'Email',
+              keyboardType: TextInputType.emailAddress,
+            ),
+            SizedBox(height: 16),
+            _buildTextField(
               controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
+              labelText: 'Password',
               obscureText: true,
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 32),
             ElevatedButton(
               onPressed: _loginUser,
               child: Text('Login'),
               style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Color(0xFF08B480),
-                shape: StadiumBorder(),
-                padding: EdgeInsets.symmetric(vertical: 12.0),
+                foregroundColor: Colors.white, backgroundColor: Color(0xFF08B480),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                padding: EdgeInsets.symmetric(vertical: 16.0),
+                textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                elevation: 5, // Adds shadow to the button
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String labelText,
+    bool obscureText = false,
+    TextInputType keyboardType = TextInputType.text,
+  }) {
+    return TextField(
+      controller: controller,
+      obscureText: obscureText,
+      keyboardType: keyboardType,
+      decoration: InputDecoration(
+        labelText: labelText,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+        filled: true,
+        fillColor: Colors.white,
+        labelStyle: TextStyle(color: Colors.black54),
       ),
     );
   }
@@ -103,44 +142,55 @@ class UserTypeSelectionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF79AC78),
-        title: const Text("LugNload"),
+        backgroundColor: Color(0xFF08B480), // Updated color for consistency
+        title: Text("LugNload"),
+        centerTitle: true, // Center the title
       ),
-      body: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Color(0xFF08B480),
-                shape: StadiumBorder(),
-                padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center, // Center the column's children horizontally
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF08B480), // Button color
+                  foregroundColor: Colors.white, // Text color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0), // Rounded corners
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                  textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), // Updated text style
+                ),
+                onPressed: () async {
+                  await SharedPreferencesService.saveLoginState(true, 'user');
+                  Navigator.pushReplacementNamed(context, '/userHomePage');
+                },
+                child: Text('Continue as User'),
               ),
-              onPressed: () async {
-                await SharedPreferencesService.saveLoginState(true, 'user');
-                Navigator.pushReplacementNamed(context, '/userHomePage');
-              },
-              child: Text('Continue as User'),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Color(0xFF08B480),
-                shape: StadiumBorder(),
-                padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+              SizedBox(height: 20),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF08B480), // Button color
+                  foregroundColor: Colors.white, // Text color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0), // Rounded corners
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                  textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), // Updated text style
+                ),
+                onPressed: () async {
+                  await SharedPreferencesService.saveLoginState(true, 'driver');
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => DriverLogin()),
+                  );
+                },
+                child: Text('Continue as Driver'),
               ),
-              onPressed: () async {
-                await SharedPreferencesService.saveLoginState(true, 'driver');
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => DriverLogin()),
-                );
-              },
-              child: Text('Continue as Driver'),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

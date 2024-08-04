@@ -16,149 +16,201 @@ class _RegistrationPageState extends State<RegistrationPage> {
   String? _firstName, _lastName, _email, _password, _homeAddress, _gender, _bio;
   int? _age;
 
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Register'),
+        title: Text('Create an Account'),
+        backgroundColor: Color(0xFF08B480), // Updated color
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                decoration: InputDecoration(labelText: 'First Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your first name';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _firstName = value;
-                },
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Last Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your last name';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _lastName = value;
-                },
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Email'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                    return 'Please enter a valid email';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _email = value;
-                },
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Password'),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
-                  }
-                  if (value.length < 6) {
-                    return 'Password must be at least 6 characters';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _password = value;
-                },
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Age'),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your age';
-                  }
-                  if (int.tryParse(value) == null) {
-                    return 'Please enter a valid age';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _age = int.tryParse(value!);
-                },
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Home Address'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your home address';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _homeAddress = value;
-                },
-              ),
-              ListTile(
-                title: Text('Gender'),
-                trailing: DropdownButton<String>(
-                  value: _gender,
-                  hint: Text('Select Gender'),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _gender = newValue;
-                    });
-                  },
-                  items: <String>['Male', 'Female', 'Other']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 20),
+                Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+                        _buildTextField(
+                          label: 'First Name',
+                          onSaved: (value) => _firstName = value,
+                          validator: (value) => value!.isEmpty ? 'Please enter your first name' : null,
+                        ),
+                        _buildTextField(
+                          label: 'Last Name',
+                          onSaved: (value) => _lastName = value,
+                          validator: (value) => value!.isEmpty ? 'Please enter your last name' : null,
+                        ),
+                        _buildTextField(
+                          label: 'Email',
+                          keyboardType: TextInputType.emailAddress,
+                          onSaved: (value) => _email = value,
+                          validator: (value) => _validateEmail(value!),
+                        ),
+                        _buildTextField(
+                          label: 'Password',
+                          obscureText: true,
+                          onSaved: (value) => _password = value,
+                          validator: (value) => _validatePassword(value!),
+                        ),
+                        _buildTextField(
+                          label: 'Age',
+                          keyboardType: TextInputType.number,
+                          onSaved: (value) => _age = int.tryParse(value!),
+                          validator: (value) => _validateAge(value!),
+                        ),
+                        _buildTextField(
+                          label: 'Home Address',
+                          onSaved: (value) => _homeAddress = value,
+                          validator: (value) => value!.isEmpty ? 'Please enter your home address' : null,
+                        ),
+                        _buildDropdownField(
+                          label: 'Gender',
+                          value: _gender,
+                          items: ['Male', 'Female', 'Other'],
+                          onChanged: (value) => setState(() => _gender = value),
+                        ),
+                        _buildTextField(
+                          label: 'Bio',
+                          maxLines: 3,
+                          onSaved: (value) => _bio = value,
+                          validator: (value) => value!.isEmpty ? 'Please enter your bio' : null,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Bio'),
-                maxLines: 3,  // Makes the bio field multiline
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your bio';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _bio = value;
-                },
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _register,
-                child: Text('Register'),
-              ),
-            ],
+                SizedBox(height: 20),
+                _isLoading
+                    ? Center(child: CircularProgressIndicator())
+                    : ElevatedButton(
+                  onPressed: _register,
+                  child: Text(
+                    'Register',
+                    style: TextStyle(color: Colors.white), // Set text color to white
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    backgroundColor: Color(0xFF08B480), // Updated color
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    textStyle: TextStyle(fontSize: 14),
+                    elevation: 0, // Remove elevation for a cleaner look
+                    side: BorderSide(color: Color(0xFF08B480), width: 2), // Border to enhance the button appearance
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
+  Widget _buildTextField({
+    required String label,
+    TextInputType keyboardType = TextInputType.text,
+    bool obscureText = false,
+    int maxLines = 1,
+    required FormFieldSetter<String> onSaved,
+    required FormFieldValidator<String> validator,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextFormField(
+        decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+        ),
+        keyboardType: keyboardType,
+        obscureText: obscureText,
+        maxLines: maxLines,
+        onSaved: onSaved,
+        validator: validator,
+      ),
+    );
+  }
+
+  Widget _buildDropdownField({
+    required String label,
+    String? value,
+    required List<String> items,
+    required ValueChanged<String?> onChanged,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: DropdownButtonFormField<String>(
+        decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+        ),
+        value: value,
+        onChanged: onChanged,
+        items: items.map((String item) {
+          return DropdownMenuItem<String>(
+            value: item,
+            child: Text(item),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  String? _validateEmail(String value) {
+    if (value.isEmpty) {
+      return 'Please enter your email';
+    }
+    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+      return 'Please enter a valid email';
+    }
+    return null;
+  }
+
+  String? _validatePassword(String value) {
+    if (value.isEmpty) {
+      return 'Please enter your password';
+    }
+    if (value.length < 6) {
+      return 'Password must be at least 6 characters';
+    }
+    return null;
+  }
+
+  String? _validateAge(String value) {
+    if (value.isEmpty) {
+      return 'Please enter your age';
+    }
+    if (int.tryParse(value) == null) {
+      return 'Please enter a valid age';
+    }
+    return null;
+  }
+
   Future<void> _register() async {
     final form = _formKey.currentState;
     if (form != null && form.validate()) {
       form.save();
+      setState(() {
+        _isLoading = true;
+      });
+
       try {
         UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
           email: _email!,
@@ -208,6 +260,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('Registration failed: $e'),
         ));
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
       }
     }
   }
