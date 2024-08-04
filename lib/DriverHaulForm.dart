@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:flutter/foundation.dart'; // Add this import
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
@@ -293,36 +293,58 @@ class _DriverHaulFormState extends State<DriverHaulForm> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (_imageUrl == null && _image == null)
-                      Text('No image selected'),
-                    if (_image != null && !kIsWeb)
-                      Image.file(_image!, height: 100),
-                    if (_imageUrl != null && kIsWeb)
-                      Image.network(_imageUrl!, height: 100),
+                      Text('No image selected')
+                    else if (_imageUrl != null)
+                      Image.network(_imageUrl!)
+                    else
+                      Image.file(_image!),
                   ],
                 ),
-                trailing: Icon(Icons.image),
-                onTap: _selectImage,
-              ),
-              TextFormField(
-                controller: _imageUrlController,
-                decoration: InputDecoration(
-                  labelText: 'Image URL (Web Only)',
-                  border: OutlineInputBorder(),
+                trailing: IconButton(
+                  icon: Icon(Icons.add_a_photo),
+                  onPressed: _selectImage,
                 ),
-                onFieldSubmitted: (value) => _setImageFromUrl(value),
               ),
               SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _submitForm,
-                child: Text('Submit'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF08B480),
-                  padding: EdgeInsets.symmetric(vertical: 16),
+                  foregroundColor: Colors.white, backgroundColor: Color(0xFF08B480), // Text color
                 ),
+                child: Text('Submit'),
               ),
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            label: 'Add',
+          ),
+
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            label: 'History',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+
+        ],
+        selectedItemColor: Colors.black, // Icon color for selected item
+        unselectedItemColor: Colors.black, // Icon color for unselected item
+        backgroundColor: Color(0xFF08B480),
       ),
     );
   }
