@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lugnload/DriverLocation.dart';
-
 import 'DriverHaulForm.dart';
 
 class DriverLogin extends StatefulWidget {
@@ -16,53 +14,85 @@ class _DriverLoginState extends State<DriverLogin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF79AC78),
-        title:const Text("LugNload"),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: const Text(
+          'LUGNLOAD',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+
       ),
       body: Center(
-        child: Container(
-          child: Column(
-            children: [
-              Padding(padding: EdgeInsets.only(top: 20),
-
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Color(0xFF08B480),
-                    shape: StadiumBorder(),
-                    padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-
-                      MaterialPageRoute(builder: (context) =>DriverHaulForm()),
-                    );
-                  },
-                  child: Text('Create Post'),
-                ),
-
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Good Evening \nNeed to shift items?',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
-              Padding(padding: EdgeInsets.only(top: 20),
-                child:ElevatedButton(
+            ),
+            SizedBox(height: 40),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor: Color(0xFF08B480),
-                    shape: StadiumBorder(),
-                    padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
                   ),
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => DriverLocation()),//navigate to the page
+                      MaterialPageRoute(builder: (context) => DriverHaulForm()),
                     );
                   },
-                  child: Text('Request Passenger'),
+                  icon: Icon(Icons.local_shipping),
+                  label: Text('Post A Haul'),
                 ),
-              )
-
-            ],
-          ),
+                SizedBox(width: 20),
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Color(0xFF333333),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => DriverLocation()),
+                    );
+                  },
+                  icon: Icon(Icons.location_on),
+                  label: Text('Book A Haul'),
+                ),
+              ],
+            ),
+            SizedBox(height: 40),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Text(
+                '"Shift the Load, Share the Road: Seamless shifting at your fingertips!"',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

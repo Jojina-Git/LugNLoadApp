@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'shared_preferences_service.dart';
 import 'registration_page.dart';
-import 'login.dart'; // Import your login page
+import 'login.dart';
 
 import 'main.dart';
 
