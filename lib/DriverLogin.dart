@@ -23,13 +23,12 @@ class _DriverLoginState extends State<DriverLogin> {
             fontWeight: FontWeight.bold,
           ),
         ),
-
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               'Good Evening \nNeed to shift items?',
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -37,18 +36,18 @@ class _DriverLoginState extends State<DriverLogin> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
-                    backgroundColor: Color(0xFF08B480),
+                    backgroundColor: const Color(0xFF08B480),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
                   ),
                   onPressed: () {
                     Navigator.push(
@@ -56,18 +55,18 @@ class _DriverLoginState extends State<DriverLogin> {
                       MaterialPageRoute(builder: (context) => DriverHaulForm()),
                     );
                   },
-                  icon: Icon(Icons.local_shipping),
-                  label: Text('Post A Haul'),
+                  icon: const Icon(Icons.local_shipping),
+                  label: const Text('Post A Haul'),
                 ),
-                SizedBox(width: 20),
+                const SizedBox(width: 20),
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
-                    backgroundColor: Color(0xFF333333),
+                    backgroundColor: const Color(0xFF333333),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
                   ),
                   onPressed: () {
                     Navigator.push(
@@ -75,22 +74,28 @@ class _DriverLoginState extends State<DriverLogin> {
                       MaterialPageRoute(builder: (context) => DriverLocation()),
                     );
                   },
-                  icon: Icon(Icons.location_on),
-                  label: Text('Book A Haul'),
+                  icon: const Icon(Icons.location_on),
+                  label: const Text('Book A Haul'),
                 ),
               ],
             ),
-            SizedBox(height: 40),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                '"Shift the Load, Share the Road: Seamless shifting at your fingertips!"',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontStyle: FontStyle.italic,
+            const SizedBox(height: 40),
+            Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(16.0),
+                  color: const Color(0xFF08B480),
+                  child: const Text(
+                    '"Shift the Load, Share the Road: Seamless shifting at your fingertips!"',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
           ],
         ),

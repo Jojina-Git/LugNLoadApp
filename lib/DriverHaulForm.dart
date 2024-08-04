@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart'; // Add this import
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
@@ -59,8 +60,13 @@ class _DriverHaulFormState extends State<DriverHaulForm> {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
-        _image = File(pickedFile.path);
-        _imageUrlController.text = '';
+        if (kIsWeb) {
+          _imageUrlController.text = pickedFile.path;
+          _imageUrl = pickedFile.path;
+        } else {
+          _image = File(pickedFile.path);
+          _imageUrlController.text = '';
+        }
       });
     }
   }
@@ -145,29 +151,38 @@ class _DriverHaulFormState extends State<DriverHaulForm> {
             children: [
               TextFormField(
                 controller: _originController,
-                decoration: InputDecoration(labelText: 'Origin'),
+                decoration: InputDecoration(
+                  labelText: 'Origin',
+                  border: OutlineInputBorder(),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter origin';
+                    return 'Please enter the origin';
                   }
                   return null;
                 },
               ),
+              SizedBox(height: 16),
               TextFormField(
                 controller: _destinationController,
-                decoration: InputDecoration(labelText: 'Destination'),
+                decoration: InputDecoration(
+                  labelText: 'Destination',
+                  border: OutlineInputBorder(),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter destination';
+                    return 'Please enter the destination';
                   }
                   return null;
                 },
               ),
+              SizedBox(height: 16),
               ListTile(
                 title: Text('Date'),
                 subtitle: _selectedDate == null
                     ? Text('Select date')
-                    : Text('${_selectedDate!.toString().substring(0, 10)}'),
+                    : Text('${_selectedDate!.toLocal()}'.split(' ')[0]),
+                trailing: Icon(Icons.calendar_today),
                 onTap: () => _selectDate(context),
               ),
               ListTile(
@@ -175,42 +190,62 @@ class _DriverHaulFormState extends State<DriverHaulForm> {
                 subtitle: _selectedTime == null
                     ? Text('Select time')
                     : Text(_selectedTime!.format(context)),
+                trailing: Icon(Icons.access_time),
                 onTap: () => _selectTime(context),
               ),
+              SizedBox(height: 16),
               TextFormField(
                 controller: _fareController,
-                decoration: InputDecoration(labelText: 'Fare'),
+                decoration: InputDecoration(
+                  labelText: 'Fare',
+                  border: OutlineInputBorder(),
+                ),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter fare';
+                    return 'Please enter the fare';
+                  }
+                  if (double.tryParse(value) == null) {
+                    return 'Please enter a valid number';
                   }
                   return null;
                 },
               ),
+              SizedBox(height: 16),
               TextFormField(
                 controller: _driverNameController,
-                decoration: InputDecoration(labelText: 'Driver Name'),
+                decoration: InputDecoration(
+                  labelText: 'Driver Name',
+                  border: OutlineInputBorder(),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter driver name';
+                    return 'Please enter the driver name';
                   }
                   return null;
                 },
               ),
+              SizedBox(height: 16),
               TextFormField(
                 controller: _carNameController,
-                decoration: InputDecoration(labelText: 'Car Name'),
+                decoration: InputDecoration(
+                  labelText: 'Car Name',
+                  border: OutlineInputBorder(),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter vehicle  name';
+                    return 'Please enter the car name';
                   }
                   return null;
                 },
               ),
+              SizedBox(height: 16),
               DropdownButtonFormField<String>(
                 value: _selectedVehicleType,
-                decoration: InputDecoration(labelText: 'Vehicle Type'),
+                decoration: InputDecoration(
+                  labelText: 'Vehicle Type',
+                  border: OutlineInputBorder(),
+                ),
                 items: vehicleTypes.map((String type) {
                   return DropdownMenuItem<String>(
                     value: type,
@@ -224,11 +259,12 @@ class _DriverHaulFormState extends State<DriverHaulForm> {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please select vehicle type';
+                    return 'Please select a vehicle type';
                   }
                   return null;
                 },
               ),
+              SizedBox(height: 16),
               Row(
                 children: [
                   Checkbox(
@@ -258,61 +294,35 @@ class _DriverHaulFormState extends State<DriverHaulForm> {
                   children: [
                     if (_imageUrl == null && _image == null)
                       Text('No image selected'),
-                    if (_image != null)
+                    if (_image != null && !kIsWeb)
                       Image.file(_image!, height: 100),
-                    if (_imageUrl != null)
+                    if (_imageUrl != null && kIsWeb)
                       Image.network(_imageUrl!, height: 100),
-                    TextFormField(
-                      controller: _imageUrlController,
-                      decoration: InputDecoration(labelText: 'Image URL'),
-                      onChanged: _setImageFromUrl,
-                    ),
                   ],
                 ),
+                trailing: Icon(Icons.image),
                 onTap: _selectImage,
               ),
+              TextFormField(
+                controller: _imageUrlController,
+                decoration: InputDecoration(
+                  labelText: 'Image URL (Web Only)',
+                  border: OutlineInputBorder(),
+                ),
+                onFieldSubmitted: (value) => _setImageFromUrl(value),
+              ),
               SizedBox(height: 16),
-              Container(
-                alignment: Alignment.center,
-                child: ElevatedButton(
-                  onPressed: _submitForm,
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Color(0xFF08B480),
-                  ),
-                  child: Text('Submit'),
+              ElevatedButton(
+                onPressed: _submitForm,
+                child: Text('Submit'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF08B480),
+                  padding: EdgeInsets.symmetric(vertical: 16),
                 ),
               ),
-              SizedBox(height: 26),
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.green,
-        unselectedItemColor: Colors.black,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle),
-            label: 'Add Post',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            label: 'History',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
       ),
     );
   }
