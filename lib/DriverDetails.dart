@@ -40,8 +40,6 @@ class _DriverDetailsState extends State<DriverDetails> {
   }
 }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

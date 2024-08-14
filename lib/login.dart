@@ -170,6 +170,8 @@ class UserTypeSelectionPage extends StatelessWidget {
                   await SharedPreferencesService.saveLoginState(true, 'user');
                   Navigator.pushReplacementNamed(context, '/userHomePage');
                 },
+
+                
                 child: Text('Continue as User'),
               ),
               SizedBox(height: 20),

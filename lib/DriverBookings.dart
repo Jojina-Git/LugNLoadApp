@@ -41,7 +41,7 @@ class _DriverBookingsState extends State<DriverBookings> {
           requests.add(PostHaul(
             id: requestDoc.id,
             name: driverDoc['origin'],
-            destination: driverDoc['destination'], // Corrected to 'destination'
+            destination: driverDoc['destination'],
           ));
         } else {
           print('Document does not exist for driverId: $driverId');
